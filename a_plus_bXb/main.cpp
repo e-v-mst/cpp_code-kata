@@ -5,7 +5,7 @@
 using namespace std;
 
 template <typename Stream>
-bool read_num(Stream &stream, long int &number)
+bool read_num(Stream &stream,   __int64 &number)
 {
     char c = 0;
     std::string buf;
@@ -16,7 +16,7 @@ bool read_num(Stream &stream, long int &number)
         {
             if (!buf.empty())
             {
-                number = atoi (buf.c_str());
+                number = _atoi64(buf.c_str());
                 return true;
             }
         }
@@ -36,17 +36,18 @@ int main()
         return EXIT_FAILURE;
     }
 
-    long long int sol=0;
-    int a=0, i=0;
+     __int64 sol=0;
+     __int64 a=0;
+     int i=0;
 
     while (!ifile.eof())
     {
-        int num;
+         __int64 num;
 
         if (read_num(ifile, num) && i == 0)
             a = num;
         else
-            sol = a + pow(num, 2);
+            sol = a + num * num;
         ++i;
     }
 
