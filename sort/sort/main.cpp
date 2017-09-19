@@ -3,42 +3,70 @@
 
 using namespace std;
 
-void insertionSort(int *arrayPtr, int length) // сортировка вставками
+void insertionSort(long int *arrayPtr, long int *indexArray, long int length) // сортировка вставками
 {
-    int temp, // временная переменная для хранения значения элемента сортируемого массива
-        item; // индекс предыдущего элемента
-    for (int counter = 1; counter < length; counter++)
+    int temp, item;
+
+    indexArray[0] = 1;
+
+    for (int i = 1; i < length; i++)
     {
-        temp = arrayPtr[counter]; // инициализируем временную переменную текущим значением элемента массива
-        item = counter-1; // запоминаем индекс предыдущего элемента массива
-        while(item >= 0 && arrayPtr[item] > temp) // пока индекс не равен 0 и предыдущий элемент массива больше текущего
+        temp = arrayPtr[i];
+        item = i - 1;
+
+        while (item >= 0 && arrayPtr[item] > temp)
         {
-            arrayPtr[item + 1] = arrayPtr[item]; // перестановка элементов массива
+            arrayPtr[item + 1] = arrayPtr[item];
             arrayPtr[item] = temp;
             item--;
         }
+
+        indexArray[i] = item + 2;
     }
 }
 
 int main()
 {
+    fstream inFile("input.txt");
 
-       int size_array = 10;
+    if (!inFile)
+    {
+        cout << "can't read file input.txt" << endl;
+        return EXIT_FAILURE;
+    }
+
+    long int size_array = 0;
+    inFile >> size_array;
+
+    long int *sort_array = new long int[size_array];
+    long int *index_array = new long int[size_array];
 
 
-       int sorted_array[10] = {1, 8, 4, 2, 3, 7, 5, 6, 9, 0};
+    int i = 0;
+    while (!inFile.eof()) {
+        inFile >> sort_array[i];
+        ++i;
+    }
 
-       insertionSort(sorted_array, size_array);
 
-       for (int counter = 0; counter < size_array; counter++)
-       {
-           cout << sorted_array[counter] << "  ";
-       }
-       cout << "\n";
-       delete [] sorted_array;
-       system("pause");
+    insertionSort(sort_array, index_array, size_array);
 
-       return 0;
+    ofstream  outFile("output.txt");
+
+    for (int i = 0; i < size_array; ++i)
+        outFile << index_array[i] << " ";
+
+    outFile << "\n";
+
+    for (int i = 0; i < size_array; ++i)
+        outFile << sort_array[i] << " ";
+
+
+    delete[] index_array;
+    delete[] sort_array;
+
+    return EXIT_SUCCESS;
 }
+
 
 
