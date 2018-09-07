@@ -25,6 +25,7 @@ var vertical = 0,
 	xh = 0, yh = 0,
 	xl = 0, yl = 0,
 	count = 0,
+	step = 0,
 
 	direction = 1, 		// Направление змейки 1 - право, 2 - вниз 3 - влево, 4 - вверх
 	apple = null; 	// Яблоко, массив, 0 элемент - x, 1 элемент - y
@@ -97,6 +98,7 @@ function draw_body(h)
 	xh = -count;
 	yh = 6*count;
 	horizontal = count;
+	step = count;
 }
 
 function moveSnake()
@@ -109,14 +111,60 @@ function moveSnake()
 	xh += horizontal;
 	yh += vertical;	
 
+	if (xh >= canvas.width)
+		xh = 0;
+
+	if (xh <= 0-step)
+		xh = canvas.width-step;
+
+	if (yh <= 0-step)
+		yh = canvas.height-step;
+
+	if (yh >= canvas.height)
+		yh = 0;
+
 
 	ctx.fillStyle = '#00e700';
 	ctx.strokeRect(xh, yh, count, count);
 	ctx.fillRect(xh, yh, count, count);
 
-
-	var c = canvas.getContext('2d');
-	ctx.fillStyle = '#b8b8b8';
 	ctx.strokeRect(x, y, count, count);
+	ctx.fillStyle = '#b8b8b8';
 	ctx.fillRect(x, y, count, count);
+
+
 }
+
+var xTail=xh, yTail=yh;
+
+$(document).ready(function(){
+	document.onkeydown = function(event){
+		xTail = xh; 
+		yTail = yh;
+
+		if(event.keyCode == '38') {
+			//console.log('Up');
+			vertical = -step;
+			horizontal = 0;
+		}
+		
+
+		else if(event.keyCode == '40'){
+			//console.log('Down');
+			vertical = step;
+			horizontal = 0;
+		}
+
+		else if(event.keyCode == '37'){
+			//console.log('Left');
+			vertical = 0;
+			horizontal = -step;
+		}
+
+		else if(event.keyCode == '39'){
+			//console.log('Right');
+			vertical = 0;
+			horizontal = step;
+		}
+	};		
+});
