@@ -27,8 +27,8 @@ var vertical = 0,
 	count = 0,
 	step = 0,
 
-	direction = 1, 		// Направление змейки 1 - право, 2 - вниз 3 - влево, 4 - вверх
-	apple = null; 	// Яблоко, массив, 0 элемент - x, 1 элемент - y
+	direction = 1,	// Направление змейки 1 - вверх, 2 - вниз 3 - влево, 4 - вправо
+	apple = null;	// Яблоко, массив, 0 элемент - x, 1 элемент - y
 
 function updateSize()
 {
@@ -106,7 +106,7 @@ function moveSnake()
 	var canvas = document.getElementById('snake');
 	var ctx = canvas.getContext('2d');
 
-	var x=xh, y=yh;
+	var x = xh, y = yh;
 
 	xh += horizontal;
 	yh += vertical;	
@@ -146,6 +146,7 @@ $(document).ready(function(){
 			//console.log('Up');
 			vertical = -step;
 			horizontal = 0;
+			direction = 1;
 		}
 		
 
@@ -153,18 +154,21 @@ $(document).ready(function(){
 			//console.log('Down');
 			vertical = step;
 			horizontal = 0;
+			direction = 2;
 		}
 
 		else if(event.keyCode == '37'){
 			//console.log('Left');
 			vertical = 0;
 			horizontal = -step;
+			direction = 3;
 		}
 
 		else if(event.keyCode == '39'){
 			//console.log('Right');
 			vertical = 0;
 			horizontal = step;
+			direction = 4;
 		}
 	};		
 });
